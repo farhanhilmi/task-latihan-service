@@ -34,6 +34,6 @@ export default buildSchema(`
 
   schema {
     query: RootQuery
-    mutation RootMutation
+    mutation: RootMutation
   }
 `);

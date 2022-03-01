@@ -6,7 +6,7 @@ const postUser = async (req, res, next) => {
   try {
     const newUser = await userService.createUser(user);
 
-    res.status(200).json({ success: true, message: 'success', data: newUser });
+    res.status(201).json({ success: true, message: 'success', data: newUser });
   } catch (err) {
     console.log(err);
     if (err instanceof Error) {

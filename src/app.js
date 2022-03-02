@@ -1,13 +1,10 @@
 import express, { json, urlencoded } from 'express';
-import mongoose from 'mongoose';
-import logger from 'morgan';
+// import logger from 'morgan';
 import { graphqlHTTP } from 'express-graphql';
 
 // Local
 // import Database from "./database.js";
 import Routes from './Routes/index.js';
-
-import config from './config/config.js';
 
 // Graphql
 import graphqlSchema from './graphql/schema.js';
@@ -15,7 +12,7 @@ import graphqlResolver from './graphql/resolver.js';
 
 const app = express();
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
@@ -46,13 +43,4 @@ app.use((error, req, res, _) => {
   });
 });
 
-try {
-  await mongoose
-    .connect(config.db.uri)
-    .then(() => console.log('Connected to DB'));
-  app.listen(config.app.port, () => {
-    console.log(`Server running on port ${config.app.port}`);
-  });
-} catch (error) {
-  console.log(error);
-}
+export default app;

@@ -1,6 +1,8 @@
 import { validateUser, hashPassword } from '../Utils/user.js';
 import UserRepository from '../Repository/userRepository.js';
 
+import log from '../Utils/logger.js';
+
 /**
  *
  * @param {Object} user
@@ -20,7 +22,7 @@ const createUser = async (user) => {
       password: hashedPassword,
     });
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };
@@ -33,7 +35,7 @@ const getAllUsers = () => {
   try {
     return UserRepository.getAll();
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };
@@ -47,7 +49,7 @@ const getUserById = async (id) => {
   try {
     return await UserRepository.getById(id);
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };
@@ -70,7 +72,7 @@ const updateUser = async (id, user) => {
       password: hashedPassword,
     });
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };
@@ -84,7 +86,7 @@ const deleteUser = async (id) => {
   try {
     return await UserRepository.deleteById(id);
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };

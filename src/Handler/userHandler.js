@@ -8,7 +8,6 @@ const postUser = async (req, res, next) => {
 
     res.status(201).json({ success: true, message: 'success', data: newUser });
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       res.status(400).json({ success: false, message: err.message, data: [] });
     } else {
@@ -23,7 +22,6 @@ const getUsers = async (req, res, next) => {
 
     res.status(200).json({ success: true, message: 'success', data: users });
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       res.status(400).json({ success: false, message: err.message, data: [] });
     } else {
@@ -39,7 +37,6 @@ const getById = async (req, res, next) => {
 
     res.status(200).json({ success: true, message: 'success', data: user });
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       res.status(400).json({ success: false, message: err.message, data: [] });
     } else {
@@ -58,7 +55,6 @@ const updateUser = async (req, res, next) => {
       .status(200)
       .json({ success: true, message: 'success', data: updatedUser });
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       res.status(400).json({ success: false, message: err.message, data: [] });
     } else {
@@ -74,7 +70,6 @@ const deleteUserById = async (req, res, next) => {
 
     res.status(200).json({ success: true, message: 'success', data: user });
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       res.status(400).json({ success: false, message: err.message, data: [] });
     } else {

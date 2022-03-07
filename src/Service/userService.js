@@ -1,6 +1,9 @@
 import { validateUser, hashPassword } from '../Utils/user.js';
 import UserRepository from '../Repository/userRepository.js';
 
+import log from '../Utils/logger.js';
+import producer from '../Utils/kafkaProducer.js';
+
 /**
  *
  * @param {Object} user
@@ -15,13 +18,12 @@ const createUser = async (user) => {
 
     const hashedPassword = await hashPassword(user.password);
 
-    const newUser = await UserRepository.create({
+    return await UserRepository.create({
       ...user,
       password: hashedPassword,
     });
-    return newUser;
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };
@@ -30,12 +32,11 @@ const createUser = async (user) => {
  *
  * @returns all users data
  */
-const getAllUsers = async () => {
+const getAllUsers = () => {
   try {
-    const users = await UserRepository.getAll();
-    return users;
+    return UserRepository.getAll();
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };
@@ -47,10 +48,9 @@ const getAllUsers = async () => {
  */
 const getUserById = async (id) => {
   try {
-    const users = await UserRepository.getById(id);
-    return users;
+    return await UserRepository.getById(id);
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };
@@ -68,13 +68,15 @@ const updateUser = async (id, user) => {
   }
   try {
     const hashedPassword = await hashPassword(user.password);
-    const users = await UserRepository.updateById(id, {
+    const updatedUser = await UserRepository.updateById(id, {
       ...user,
       password: hashedPassword,
     });
-    return users;
+    console.log('updatedUser: ', updatedUser);
+    producer.sendMessage('UPDATE', updatedUser);
+    return updatedUser;
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
     throw new Error(err.message);
   }
 };
@@ -86,14 +88,28 @@ const updateUser = async (id, user) => {
  */
 const deleteUser = async (id) => {
   try {
-    const users = await UserRepository.deleteById(id);
-    console.log('users: ', users);
-    return users;
+    return await UserRepository.deleteById(id);
   } catch (err) {
-    console.log('err', err);
+    log.error(err);
+    throw new Error(err.message);
+  }
+};
+
+const deleteAll = async () => {
+  try {
+    return await UserRepository.deleteAll();
+  } catch (err) {
+    log.error(err);
     throw new Error(err.message);
   }
 };
 
 // eslint-disable-next-line object-curly-newline
-export default { createUser, getAllUsers, getUserById, updateUser, deleteUser };
+export default {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  deleteAll,
+};

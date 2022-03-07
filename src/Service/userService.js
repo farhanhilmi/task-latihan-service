@@ -2,6 +2,7 @@ import { validateUser, hashPassword } from '../Utils/user.js';
 import UserRepository from '../Repository/userRepository.js';
 
 import log from '../Utils/logger.js';
+import producer from '../Utils/kafkaProducer.js';
 
 /**
  *
@@ -67,10 +68,13 @@ const updateUser = async (id, user) => {
   }
   try {
     const hashedPassword = await hashPassword(user.password);
-    return await UserRepository.updateById(id, {
+    const updatedUser = await UserRepository.updateById(id, {
       ...user,
       password: hashedPassword,
     });
+    console.log('updatedUser: ', updatedUser);
+    producer.sendMessage('UPDATE', updatedUser);
+    return updatedUser;
   } catch (err) {
     log.error(err);
     throw new Error(err.message);
@@ -91,5 +95,21 @@ const deleteUser = async (id) => {
   }
 };
 
+const deleteAll = async () => {
+  try {
+    return await UserRepository.deleteAll();
+  } catch (err) {
+    log.error(err);
+    throw new Error(err.message);
+  }
+};
+
 // eslint-disable-next-line object-curly-newline
-export default { createUser, getAllUsers, getUserById, updateUser, deleteUser };
+export default {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  deleteAll,
+};

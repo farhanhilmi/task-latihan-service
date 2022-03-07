@@ -78,5 +78,30 @@ const deleteUserById = async (req, res, next) => {
   }
 };
 
+const deleteAllUser = async (req, res, next) => {
+  try {
+    await userService.deleteAll();
+
+    res.status(200).json({
+      success: true,
+      message: 'successfully deleted all data',
+      data: [],
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({ success: false, message: err.message, data: [] });
+    } else {
+      next(err);
+    }
+  }
+};
+
 // eslint-disable-next-line object-curly-newline
-export default { postUser, getUsers, getById, updateUser, deleteUserById };
+export default {
+  postUser,
+  getUsers,
+  getById,
+  updateUser,
+  deleteUserById,
+  deleteAllUser,
+};

@@ -67,6 +67,10 @@ class UserRepository {
     if (!isExist) throw new Error('User Not Found!');
     return this.model.findByIdAndDelete(userId);
   }
+
+  deleteAll() {
+    return this.model.deleteMany();
+  }
 }
 
 export default new UserRepository(userModel);

@@ -2,7 +2,7 @@ import { validateUser, hashPassword } from '../Utils/user.js';
 import UserRepository from '../Repository/userRepository.js';
 
 import log from '../Utils/logger.js';
-import producer from '../Utils/kafkaProducer.js';
+import producer from './kafkaProducer.js';
 
 /**
  *
@@ -18,10 +18,12 @@ const createUser = async (user) => {
 
     const hashedPassword = await hashPassword(user.password);
 
-    return await UserRepository.create({
+    const userData = {
       ...user,
       password: hashedPassword,
-    });
+    };
+    producer.sendRecord('INSERT', userData);
+    return userData;
   } catch (err) {
     log.error(err);
     throw new Error(err.message);
@@ -68,13 +70,12 @@ const updateUser = async (id, user) => {
   }
   try {
     const hashedPassword = await hashPassword(user.password);
-    const updatedUser = await UserRepository.updateById(id, {
-      ...user,
-      password: hashedPassword,
-    });
-    console.log('updatedUser: ', updatedUser);
-    producer.sendMessage('UPDATE', updatedUser);
-    return updatedUser;
+    const userData = {
+      userId: id,
+      user: { ...user, password: hashedPassword },
+    };
+    producer.sendRecord('UPDATE', userData);
+    return userData;
   } catch (err) {
     log.error(err);
     throw new Error(err.message);
@@ -88,7 +89,8 @@ const updateUser = async (id, user) => {
  */
 const deleteUser = async (id) => {
   try {
-    return await UserRepository.deleteById(id);
+    producer.sendRecord('DELETE', { userId: id });
+    return id;
   } catch (err) {
     log.error(err);
     throw new Error(err.message);

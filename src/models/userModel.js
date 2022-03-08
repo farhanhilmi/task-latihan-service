@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 const genderOptions = {
   values: ['male', 'female'],
-  message: 'teteaygdy',
 };
 
 const userSchema = new mongoose.Schema(

@@ -23,7 +23,7 @@ const createUser = async (user) => {
       password: hashedPassword,
     };
     producer.sendRecord('INSERT', userData);
-    return userData;
+    return 'success';
   } catch (err) {
     log.error(err);
     throw new Error(err.message);
@@ -75,7 +75,7 @@ const updateUser = async (id, user) => {
       user: { ...user, password: hashedPassword },
     };
     producer.sendRecord('UPDATE', userData);
-    return userData;
+    return 'success';
   } catch (err) {
     log.error(err);
     throw new Error(err.message);
@@ -90,7 +90,7 @@ const updateUser = async (id, user) => {
 const deleteUser = async (id) => {
   try {
     producer.sendRecord('DELETE', { userId: id });
-    return id;
+    return 'success';
   } catch (err) {
     log.error(err);
     throw new Error(err.message);

@@ -4,7 +4,7 @@ import config from '../config/config.js';
 
 const client = new Kafka({
   clientId: config.kafka.CLIENT_ID,
-  brokers: config.kafka.BROKERS,
+  brokers: [config.kafka.BROKERS],
 });
 const producer = client.producer();
 await producer.connect();

@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // eslint-disable-next-line object-curly-newline
-const { MONGODB_URI, PORT, KAFKA_CLIENT_ID, KAFKA_BROKERS } = process.env;
+// eslint-disable-next-line operator-linebreak
+const { MONGODB_URI, PORT, KAFKA_CLIENT_ID, KAFKA_BROKERS, SECRET_TOKEN } =
+  process.env;
 
 const config = {
   app: {
@@ -16,6 +18,7 @@ const config = {
     CLIENT_ID: KAFKA_CLIENT_ID,
     BROKERS: KAFKA_BROKERS,
   },
+  SECRET_TOKEN,
 };
 
 export default config;

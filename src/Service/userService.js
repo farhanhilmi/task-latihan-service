@@ -1,4 +1,9 @@
-import { validateUser, hashPassword } from '../Utils/user.js';
+import {
+  validateUser,
+  hashPassword,
+  generateAccessToken,
+  verifyPassword,
+} from '../Utils/user.js';
 import UserRepository from '../Repository/userRepository.js';
 
 import log from '../Utils/logger.js';
@@ -24,6 +29,25 @@ const createUser = async (user) => {
     };
     producer.sendRecord('INSERT', userData);
     return 'success';
+  } catch (err) {
+    log.error(err);
+    throw new Error(err.message);
+  }
+};
+
+const login = async ({ username, password }) => {
+  try {
+    if (!(username && password)) throw new Error('All input is required!');
+
+    const user = await UserRepository.getByKey('username', username);
+
+    if (!verifyPassword(password, user.password)) {
+      throw new Error('Password incorrect!');
+    }
+
+    // eslint-disable-next-line no-underscore-dangle
+    const token = generateAccessToken(user._id.toString());
+    return token;
   } catch (err) {
     log.error(err);
     throw new Error(err.message);
@@ -114,4 +138,5 @@ export default {
   updateUser,
   deleteUser,
   deleteAll,
+  login,
 };

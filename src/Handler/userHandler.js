@@ -16,6 +16,22 @@ const postUser = async (req, res, next) => {
   }
 };
 
+const login = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+
+    const accessToken = await userService.login({ username, password });
+
+    res.status(200).json({ success: true, message: 'success', accessToken });
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({ success: false, message: err.message, data: [] });
+    } else {
+      next(err);
+    }
+  }
+};
+
 const getUsers = async (req, res, next) => {
   try {
     const users = await userService.getAllUsers();
@@ -104,4 +120,5 @@ export default {
   updateUser,
   deleteUserById,
   deleteAllUser,
+  login,
 };

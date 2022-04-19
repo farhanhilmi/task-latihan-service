@@ -41,6 +41,9 @@ const login = async ({ username, password }) => {
 
     const user = await UserRepository.getByKey('username', username);
 
+    if (!user) {
+      throw new Error(`Username ${username} is not registered yet!`);
+    }
     if (!verifyPassword(password, user.password)) {
       throw new Error('Password incorrect!');
     }

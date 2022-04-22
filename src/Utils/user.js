@@ -55,6 +55,11 @@ const verifyPassword = async (password, hash) => {
   });
 };
 
+/**
+ *
+ * @param {String} userId userId for jwt payload
+ * @returns {String} jwt token
+ */
 const generateAccessToken = (userId) => {
   return jwt.sign({ userId }, config.SECRET_TOKEN, { expiresIn: '2h' });
 };

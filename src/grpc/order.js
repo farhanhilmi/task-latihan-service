@@ -1,5 +1,6 @@
 import grpc from '@grpc/grpc-js';
 import protoLoader from '@grpc/proto-loader';
+import config from '../config/config.js';
 
 const options = {
   keepCase: true,
@@ -15,7 +16,7 @@ const packageDef = protoLoader.loadSync(PROTO_PATH, options);
 const orderPackage = grpc.loadPackageDefinition(packageDef);
 
 const client = new orderPackage.OrderService(
-  '127.0.0.1:8001',
+  config.grpc.port.order,
   grpc.credentials.createInsecure(),
 );
 

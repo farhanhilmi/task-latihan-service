@@ -61,7 +61,9 @@ const verifyPassword = async (password, hash) => {
  * @returns {String} jwt token
  */
 const generateAccessToken = (userId) => {
-  return jwt.sign({ userId }, config.SECRET_TOKEN, { expiresIn: '2h' });
+  return jwt.sign({ userId }, config.SECRET_TOKEN, {
+    expiresIn: config.tokenExpiresIn,
+  });
 };
 
 export { validateUser, hashPassword, verifyPassword, generateAccessToken };

@@ -19,7 +19,7 @@ const {
 
 const config = {
   app: {
-    port: PORT || 8000,
+    port: PORT,
   },
   db: {
     uri: MONGODB_URI,

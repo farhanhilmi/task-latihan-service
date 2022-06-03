@@ -40,7 +40,6 @@ const login = async ({ username, password }) => {
     if (!(username && password)) throw new Error('All input is required!');
 
     const user = await UserRepository.getByKey('username', username);
-
     if (!user) {
       throw new Error(`Username ${username} is not registered yet!`);
     }

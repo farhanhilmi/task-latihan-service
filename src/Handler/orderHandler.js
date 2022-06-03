@@ -3,7 +3,7 @@ import createNewOrder from '../Service/orderService.js';
 const createOrder = async (req, res, next) => {
   try {
     const { products } = req.body;
-
+    console.log('products', products);
     await createNewOrder(products, req.user.userId);
 
     res

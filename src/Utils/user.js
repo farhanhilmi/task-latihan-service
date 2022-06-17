@@ -1,5 +1,7 @@
 import Joi from 'joi';
 import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import config from '../config/config.js';
 
 /**
  *
@@ -53,4 +55,15 @@ const verifyPassword = async (password, hash) => {
   });
 };
 
-export { validateUser, hashPassword, verifyPassword };
+/**
+ *
+ * @param {String} userId userId for jwt payload
+ * @returns {String} jwt token
+ */
+const generateAccessToken = (userId) => {
+  return jwt.sign({ userId }, config.SECRET_TOKEN, {
+    expiresIn: config.tokenExpiresIn,
+  });
+};
+
+export { validateUser, hashPassword, verifyPassword, generateAccessToken };

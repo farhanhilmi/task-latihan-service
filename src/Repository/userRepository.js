@@ -40,6 +40,13 @@ class UserRepository {
     return user;
   }
 
+  async getByKey(key, value) {
+    const isExist = await this.model.exists({ [key]: value });
+    if (!isExist) throw new Error('User Not Found!');
+    const user = await this.model.findOne({ [key]: value });
+    return user;
+  }
+
   /**
    *
    * @param {String} id user id

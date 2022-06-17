@@ -1,16 +1,26 @@
 import express, { json, urlencoded } from 'express';
-// import logger from 'morgan';
+
+// swagger
+import swaggerUI from 'swagger-ui-express';
+
 import { graphqlHTTP } from 'express-graphql';
 
+// import logger from 'morgan';
+
 // Local
-// import Database from "./database.js";
 import Routes from './Routes/index.js';
 
 // Graphql
 import graphqlSchema from './graphql/schema.js';
 import graphqlResolver from './graphql/resolver.js';
+// import config from './config/config.js';
+
+import swaggerDocument from './docs/index.js';
 
 const app = express();
+
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+// app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
 // app.use(logger('dev'));
 app.use(json());

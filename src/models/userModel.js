@@ -37,6 +37,9 @@ const userSchema = new mongoose.Schema(
       required: 'Status is required!',
       default: 'active',
     },
+    token: {
+      type: String,
+    },
   },
   {
     timestamps: { createdAt: 'createdDate: ', updatedAt: 'modifyDate: ' },
@@ -44,4 +47,4 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-export default mongoose.model('userModel', userSchema);
+export default mongoose.model('Users', userSchema);
